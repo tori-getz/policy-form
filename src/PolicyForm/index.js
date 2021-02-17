@@ -10,6 +10,7 @@ import Select from "react-validation/build/select";
 import Button from "react-validation/build/button";
 import ReactMaskMixin from "react-mask-mixin";
 import KontinentClient from "./KontinentClient";
+import dateFormat from "dateformat";
 
 import { required, date, email, phone, passport } from './validators';
 
@@ -47,14 +48,25 @@ export default class PolicyForm extends Component {
             type: "travel"
         });
 
+        let now = new Date();
+
+        now.setMonth(now.getMonth() + 1);
+
+        let dateStart = dateFormat(now, 'dd.mm.yyyy');
+
+        now.setMonth(now.getMonth() + 1 + this.state.radio);
+        
+        let dateEnd = dateFormat(now, 'dd.mm.yyyy');
+
         const sum = await client.fullCalc({
             tourists: [
                 { birthDay: this.state.insuredBirthday }
             ],
-            dateStart: '01.04.2021'
+            dateStart: dateStart,
+            dateEnd: dateEnd
         });
 
-        this.setState({ sum: sum / this.state.radio });
+        this.setState({ sum: sum * this.state.radio });
     }
 
     pay (event) {
@@ -178,7 +190,7 @@ export default class PolicyForm extends Component {
                                     type="radio" 
                                     name="flexRadioDefault" 
                                     id="flexRadioDefault1"
-                                    onChange={() => this.radio(6)}/>
+                                    onChange={() => this.radio(1)}/>
                                 <label className="form-check-label" htmlFor="flexRadioDefault1">
                                     1 месяц
                                 </label>
@@ -191,7 +203,7 @@ export default class PolicyForm extends Component {
                                     type="radio"
                                     name="flexRadioDefault"
                                     id="flexRadioDefault1"
-                                    onChange={() => this.radio(4)}/>
+                                    onChange={() => this.radio(3)}/>
                                 <label className="form-check-label" htmlFor="flexRadioDefault1">
                                     3 месяца
                                 </label>
@@ -204,7 +216,7 @@ export default class PolicyForm extends Component {
                                     type="radio" 
                                     name="flexRadioDefault"
                                     id="flexRadioDefault1"
-                                    onChange={() => this.radio(2)}/>
+                                    onChange={() => this.radio(6)}/>
                                 <label className="form-check-label" htmlFor="flexRadioDefault1">
                                     6 месяцев
                                 </label>
@@ -217,7 +229,7 @@ export default class PolicyForm extends Component {
                                     type="radio" 
                                     name="flexRadioDefault" 
                                     id="flexRadioDefault1"
-                                    onChange={() => this.radio(1)}/>
+                                    onChange={() => this.radio(12)}/>
                                 <label className="form-check-label" htmlFor="flexRadioDefault1">
                                     12 месяцев
                                 </label>

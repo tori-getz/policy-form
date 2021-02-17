@@ -9,6 +9,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^5.0.0-beta2",
     "create-react-class": "^15.7.0",
+    "dateformat": "^4.5.1",
     "is-date": "0.0.1",
     "is-email": "^1.0.0",
     "is-phone-number": "^1.0.4",

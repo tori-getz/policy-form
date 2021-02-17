@@ -23,7 +23,7 @@ export default class KontinentClient {
     async fullCalc ({ tourists, dateStart }) {
         const result = await Axios.get(`${this.BASE_URL}/fullcalc.json${this._getRequestURL(tourists)}&if[date_start]=${dateStart}&if[corona2]=3`);
 
-        return result.data.calcResult[0] * 74;
+        return result.data.calcResult[0];
     }
 
     async book ({ tourists }) {
