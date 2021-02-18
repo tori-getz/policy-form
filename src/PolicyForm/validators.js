@@ -1,7 +1,15 @@
 
 import isDate from "is-date";
+import normalizePhone from "phone";
 import isPhoneNumber from "is-phone-number";
 import isEmail from "is-email";
+import { AgeFromDateString } from "age-calculator";
+
+export const checked = (value, props) => {
+    if (props.isCheckable && !props.checked) {
+        return "";
+    }
+}
 
 export const required = (value) => {
     if (!value.toString().trim().length) {

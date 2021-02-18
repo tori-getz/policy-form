@@ -2,41 +2,33 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./policy-form.css"
 import React, { Component } from "react";
-import createReactClass from "create-react-class";
 import { Container, Row, Col } from "react-grid-system";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import Select from "react-validation/build/select";
 import Button from "react-validation/build/button";
-import ReactMaskMixin from "react-mask-mixin";
-import KontinentClient from "./KontinentClient";
+import KontinentClient from "./lib/KontinentClient";
 import dateFormat from "dateformat";
+import MaskedInput from "./components/Maskedinput";
+import Error from "./components/Error";
+import PayForm from "./components/PayForm";
 
-import { required, date, email, phone, passport } from './validators';
-
-export const MaskedInput = createReactClass({
-    mixins: [ ReactMaskMixin ],
-    render () {
-        return (
-            <Input {...this.props} {...this.mask.props} />
-        );
-    }
-});
+import { required, date, email, phone, passport, checked } from './validators';
 
 export default class PolicyForm extends Component {
     constructor () {
         super();
 
         this.state = {
-            insuredBirthday: "",
-
             radio: 1,
             sum: 0,
+
+            orderId: "",
 
             termsAccept: false
         }
 
-        this.pay = this.pay.bind(this);
+        this.order = this.order.bind(this);
         this.arrange = this.arrange.bind(this);
         this.handleUserInput = this.handleUserInput.bind(this);
         this.radio = this.radio.bind(this);
@@ -66,12 +58,64 @@ export default class PolicyForm extends Component {
             dateEnd: dateEnd
         });
 
-        this.setState({ sum: sum * this.state.radio });
+        this.setState({ sum: sum });
     }
 
-    pay (event) {
+    async order (event) {
         event.preventDefault();
         console.log(this.state);
+
+        const client = new KontinentClient({
+            key: "a000154a364e819d25b043e79d713e2d6ee62244",
+            type: "travel"
+        });
+
+        let now = new Date();
+        now.setMonth(now.getMonth() + 1);
+        let dateStart = dateFormat(now, 'dd.mm.yyyy');
+        now.setMonth(now.getMonth() + 1 + this.state.radio - 1);
+        let dateEnd = dateFormat(now, 'dd.mm.yyyy');
+
+        const buyerName = this.state.fio.split(" ");
+        const buyerPassport = this.state.passport.split(" ");
+
+        const insuredName = this.state.insuredData.split(" ");
+
+        const book = await client.book({
+            buyer: {
+                firstName: buyerName[0],
+                lastName: buyerName[1],
+                middleName: buyerName[2],
+                gender: this.state.gender,
+                email: this.state.email,
+                birthDay: this.state.birthday,
+                passport_type: 1,
+                passport_ser: buyerPassport[0],
+                passport_num: buyerPassport[1],
+                phone: this.state.phone
+            },
+            tourists: [
+                {
+                    firstName: insuredName[0],
+                    lastName: insuredName[1],
+                    middleName: insuredName[2],
+                    gender: this.state.insuredGender,
+                    birthDay: this.state.insuredBirthday
+                }
+            ],
+            dateStart: dateStart,
+            dateEnd: dateEnd
+        });
+
+        console.log(book.success)
+
+        if (book.success) {
+            console.log('Form valid');
+            this.setState({ orderErrorMessage: "", orderId: book.orderId })
+        } else {
+            console.log("Form invalid");
+            this.setState({ orderErrorMessage: book.errmessg });
+        }
     }
 
     handleUserInput (e) {
@@ -125,14 +169,14 @@ export default class PolicyForm extends Component {
                                 name="gender"
                                 onChange={this.handleUserInput}>
                                 <option defaultValue> Пол </option>
-                                <option value="male"> Мужской </option>
-                                <option value="female"> Женский </option>
+                                <option value="M"> Мужской </option>
+                                <option value="F"> Женский </option>
                             </Select>
                         </Col>
                         <Col sm={3}>
                             <MaskedInput
                                 className="form-control"
-                                mask="99-99 999999"
+                                mask="9999 999999"
                                 name="passport"
                                 onChange={this.handleUserInput}
                                 validations={[ required, passport ]}
@@ -143,6 +187,8 @@ export default class PolicyForm extends Component {
                             <MaskedInput
                                 className="form-control"
                                 mask="+7 (999) 999-9999"
+                                name="phone"
+                                onChange={this.handleUserInput}
                                 validations={[ required, phone ]}
                                 placeholder="Номер телефона"
                             />
@@ -151,6 +197,8 @@ export default class PolicyForm extends Component {
                             <Input
                                 type="text"
                                 className="form-control"
+                                name="email"
+                                onChange={this.handleUserInput}
                                 validations={[ required, email ]}
                                 placeholder="Email" />
                         </Col>
@@ -162,6 +210,7 @@ export default class PolicyForm extends Component {
                                 type="text"
                                 className="form-control"
                                 name="insuredData"
+                                onChange={this.handleUserInput}
                                 validations={[ required ]}/>
                         </Col>
                         <Col sm={3}>
@@ -175,7 +224,7 @@ export default class PolicyForm extends Component {
                                 />
                         </Col>
                         <Col sm={3}>
-                            <Select validations={[ required ]} name="insuredGender" className="form-select">
+                            <Select validations={[ required ]} name="insuredGender" className="form-select" onChange={this.handleUserInput}>
                                 <option defaultValue> Пол </option>
                                 <option value="M"> Мужской </option>
                                 <option value="F"> Женский </option>
@@ -190,6 +239,7 @@ export default class PolicyForm extends Component {
                                     type="radio" 
                                     name="flexRadioDefault" 
                                     id="flexRadioDefault1"
+                                    value="0"
                                     onChange={() => this.radio(1)}/>
                                 <label className="form-check-label" htmlFor="flexRadioDefault1">
                                     1 месяц
@@ -243,9 +293,7 @@ export default class PolicyForm extends Component {
                                     className="form-check-input"
                                     type="checkbox" 
                                     id="flexCheckDefault"
-                                    name="termsAccept"
-                                    value="0"
-                                    validations={[ required ]}/>
+                                    validations={[ checked ]}/>
                                 <label 
                                     className="form-check-label"
                                     htmlFor="flexCheckDefault" >
@@ -264,12 +312,13 @@ export default class PolicyForm extends Component {
                         <Col>
                             <Button
                                 className="btn btn-primary"
-                                validated={this.arrange}
-                                onClick={this.pay} >
+                                onClick={this.order} >
                                     Оформить
                             </Button>
                         </Col>
                     </Row>
+                    <Error message={this.state.orderErrorMessage} />
+                    { this.state.orderId !== "" ? <PayForm orderId={this.state.orderId} /> : ""}
                 </Form>
             </Container>
         );
