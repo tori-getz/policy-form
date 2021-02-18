@@ -29,15 +29,19 @@ export default class KontinentClient {
         return url;
     }
 
-    async fullCalc ({ tourists, dateStart, dateEnd }) {
-        const result = await Axios.get(`${this.BASE_URL}/fullcalc.json?key=${this.key}${this._getTourists(tourists)}&if[date_start]=${dateStart}&if[date_end]=${dateEnd}&if[corona2]=3`);
+    async fullCalc ({ tourists, dateStart, months }) {
+        const result = await Axios.get(`${this.BASE_URL}/fullcalc.json?key=${this.key}${this._getTourists(tourists)}&if[date_start]=${dateStart}&if[corona2]=${months}`);
 
         return result.data.calcResult[0];
     }
 
-    async book ({ tourists, buyer, dateStart, dateEnd }) {
-        const result = await Axios.get(`${this.BASE_URL}/book.json?key=${this.key}&if[company]=rgslife&if[corona2]=3&if[date_start]=${dateStart}&if[date_end]=${dateEnd}${this._getBuyer(buyer)}${this._getTourists(tourists)}`);
+    async book ({ tourists, buyer, dateStart, months }) {
+        const result = await Axios.get(`${this.BASE_URL}/book.json?key=${this.key}&if[company]=rgslife&if[corona2]=${months}&if[date_start]=${dateStart}${this._getBuyer(buyer)}${this._getTourists(tourists)}`);
 
         return result.data;
+    }
+
+    async pay ({ orderId, sum, success_url, failure_url }) {
+        const result = await Axios.get(`${this.BASE_URL}/pay.json?key=${this.key}&order=${orderId}&pay_sum=${sum}`)
     }
 }

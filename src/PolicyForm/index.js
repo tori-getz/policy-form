@@ -42,21 +42,15 @@ export default class PolicyForm extends Component {
         });
 
         let now = new Date();
-
         now.setMonth(now.getMonth() + 1);
-
         let dateStart = dateFormat(now, 'dd.mm.yyyy');
-
-        now.setMonth(now.getMonth() + 1 + this.state.radio);
-        
-        let dateEnd = dateFormat(now, 'dd.mm.yyyy');
 
         const sum = await client.fullCalc({
             tourists: [
                 { birthDay: this.state.insuredBirthday }
             ],
             dateStart: dateStart,
-            dateEnd: dateEnd
+            months: this.state.radio
         });
 
         this.setState({ sum: sum });
@@ -74,8 +68,6 @@ export default class PolicyForm extends Component {
         let now = new Date();
         now.setMonth(now.getMonth() + 1);
         let dateStart = dateFormat(now, 'dd.mm.yyyy');
-        now.setMonth(now.getMonth() + 1 + this.state.radio - 1);
-        let dateEnd = dateFormat(now, 'dd.mm.yyyy');
 
         const buyerName = this.state.fio.split(" ");
         const buyerPassport = this.state.passport.split(" ");
@@ -105,7 +97,7 @@ export default class PolicyForm extends Component {
                 }
             ],
             dateStart: dateStart,
-            dateEnd: dateEnd
+            months: this.state.radio
         });
 
         console.log(book.success)
@@ -132,9 +124,9 @@ export default class PolicyForm extends Component {
         }
     }
 
-    radio (number) {
-        this.setState({ radio: number });
-        this.arrange();
+    async radio (number) {
+        await this.setState({ radio: number });
+        await this.arrange();
     }
 
     render () {
@@ -291,7 +283,7 @@ export default class PolicyForm extends Component {
                     <Row>
                         <Col sm={9}>
                             <div className="form-check">
-                                <Input 
+                                <input 
                                     className="form-check-input"
                                     type="checkbox" 
                                     id="terms-accept"
