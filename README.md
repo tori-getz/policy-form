@@ -15,9 +15,9 @@ import PolicyForm from "policy-form";
 ## Dev
 
 ### Install dependencies
-``
+```
 $ npm install
-``
+```
 
 ### Run
 ```
