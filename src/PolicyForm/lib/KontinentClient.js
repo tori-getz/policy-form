@@ -42,6 +42,8 @@ export default class KontinentClient {
     }
 
     async pay ({ orderId, sum, success_url, failure_url }) {
-        const result = await Axios.get(`${this.BASE_URL}/pay.json?key=${this.key}&order=${orderId}&pay_sum=${sum}`)
+        const result = await Axios.get(`${this.BASE_URL}/pay.json?key=${this.key}&order=${orderId}&pay_sum=${sum}&mode=2&success_url=${success_url}&failure_url=${failure_url}`)
+        
+        return result.data[0];
     }
 }

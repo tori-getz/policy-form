@@ -1,13 +1,25 @@
-# Форма Welcome Media
+# Form for Konti.travel (COVID)
 
-Нужно поправить валидацию и переделать маски. Но в целом работает =)
+## Install
+```
+$ npm install tori-getz/policy-form#main
+```
 
-## Install 
+## Use
+```js
+import PolicyForm from "policy-form";
+
+<PolicyForm partner="<YOUR_PARTNER_KEY>" />
+```
+
+## Dev
+
+### Install dependencies
 ``
 $ npm install
 ``
 
-## Run
+### Run
 ```
 $ npm start
 ```

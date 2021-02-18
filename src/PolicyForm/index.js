@@ -17,8 +17,8 @@ import PayForm from "./components/PayForm";
 import { required, date, email, phone, passport, checked } from './validators';
 
 export default class PolicyForm extends Component {
-    constructor () {
-        super();
+    constructor (props) {
+        super(props);
 
         this.state = {
             radio: 1,
@@ -26,7 +26,8 @@ export default class PolicyForm extends Component {
 
             orderId: "",
 
-            termsAccept: false
+            termsAccept: false,
+            loading: false
         }
 
         this.order = this.order.bind(this);
@@ -37,7 +38,7 @@ export default class PolicyForm extends Component {
 
     async arrange () {
         const client = new KontinentClient({
-            key: "a000154a364e819d25b043e79d713e2d6ee62245",
+            key: this.props.partner,
             type: "travel"
         });
 
@@ -60,8 +61,12 @@ export default class PolicyForm extends Component {
         event.preventDefault();
         console.log(this.state);
 
+        this.setState({
+            loading: true
+        });
+
         const client = new KontinentClient({
-            key: "a000154a364e819d25b043e79d713e2d6ee62244",
+            key: this.props.partner,
             type: "travel"
         });
 
@@ -104,10 +109,10 @@ export default class PolicyForm extends Component {
 
         if (book.success) {
             console.log('Form valid');
-            this.setState({ orderErrorMessage: "", orderId: book.orderId })
+            this.setState({ orderErrorMessage: "", orderId: book.orderId, loading: false })
         } else {
             console.log("Form invalid");
-            this.setState({ orderErrorMessage: book.errmessg });
+            this.setState({ orderErrorMessage: book.errmessg, loading: false });
         }
     }
 
@@ -313,11 +318,11 @@ export default class PolicyForm extends Component {
                             <Button
                                 className="btn"
                                 onClick={this.order} >
-                                    Оформить
+                                    { !this.state.loading ? "Оформить" : "Подождите..." }
                             </Button>
                         </Col>
                     </Row>
-                    { this.state.orderId !== "" ? <PayForm orderId={this.state.orderId} sum={this.state.sum} /> : ""}
+                    { this.state.orderId !== "" ? <PayForm orderId={this.state.orderId} partner={this.props.partner} sum={this.state.sum} /> : ""}
                 </Form>
             </Container>
         );
