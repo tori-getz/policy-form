@@ -5,7 +5,7 @@ import { control } from "react-validation";
 
 const MaskedInput = ({ error, isChanged, isUsed, ...props }) => (
     <div>
-        <InputMask {...props} />
+        <InputMask maskPlaceholder=" " {...props} />
         {isChanged && isUsed && error}
     </div>
 )

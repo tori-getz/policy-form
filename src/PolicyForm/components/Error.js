@@ -7,7 +7,7 @@ export default class Error extends Component {
         return (
             <Row>
                 <Col>
-                    <p className="text-danger"> { this.props.message } </p>
+                    <p className="text-danger error-message"> { this.props.message } </p>
                 </Col>
             </Row>
         );

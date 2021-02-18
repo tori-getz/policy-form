@@ -22,6 +22,7 @@
     "react-mask-mixin": "0.0.12",
     "react-scripts": "4.0.2",
     "react-validation": "^3.0.7",
+    "typeface-roboto": "^1.1.13",
     "web-vitals": "^1.1.0"
   },
   "scripts": {

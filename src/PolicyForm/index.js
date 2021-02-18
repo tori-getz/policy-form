@@ -1,4 +1,5 @@
 
+import "typeface-roboto";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./policy-form.css"
 import React, { Component } from "react";
@@ -36,7 +37,7 @@ export default class PolicyForm extends Component {
 
     async arrange () {
         const client = new KontinentClient({
-            key: "a000154a364e819d25b043e79d713e2d6ee62244",
+            key: "a000154a364e819d25b043e79d713e2d6ee62245",
             type: "travel"
         });
 
@@ -238,11 +239,12 @@ export default class PolicyForm extends Component {
                                     className="form-check-input"
                                     type="radio" 
                                     name="flexRadioDefault" 
-                                    id="flexRadioDefault1"
+                                    id="orange-radio"
                                     value="0"
+                                    defaultChecked
                                     onChange={() => this.radio(1)}/>
-                                <label className="form-check-label" htmlFor="flexRadioDefault1">
-                                    1 месяц
+                                <label className="form-check-label" htmlFor="orange-radio">
+                                    <span></span> 1 месяц
                                 </label>
                             </div>
                         </Col>
@@ -252,10 +254,10 @@ export default class PolicyForm extends Component {
                                     className="form-check-input"
                                     type="radio"
                                     name="flexRadioDefault"
-                                    id="flexRadioDefault1"
+                                    id="orange-radio"
                                     onChange={() => this.radio(3)}/>
-                                <label className="form-check-label" htmlFor="flexRadioDefault1">
-                                    3 месяца
+                                <label className="form-check-label" htmlFor="orange-radio">
+                                     <span></span> 3 месяца
                                 </label>
                             </div>
                         </Col>
@@ -265,29 +267,29 @@ export default class PolicyForm extends Component {
                                     className="form-check-input" 
                                     type="radio" 
                                     name="flexRadioDefault"
-                                    id="flexRadioDefault1"
+                                    id="orange-radio"
                                     onChange={() => this.radio(6)}/>
-                                <label className="form-check-label" htmlFor="flexRadioDefault1">
-                                    6 месяцев
+                                <label className="form-check-label" htmlFor="orange-radio">
+                                    <span></span> 6 месяцев
                                 </label>
                             </div>
                         </Col>
-                        <Col sm={2}>
+                        <Col sm={3}>
                             <div className="form-check">
                                 <input 
                                     className="form-check-input" 
                                     type="radio" 
                                     name="flexRadioDefault" 
-                                    id="flexRadioDefault1"
+                                    id="orange-radio"
                                     onChange={() => this.radio(12)}/>
-                                <label className="form-check-label" htmlFor="flexRadioDefault1">
-                                    12 месяцев
+                                <label className="form-check-label" htmlFor="orange-radio">
+                                    <span></span> 12 месяцев
                                 </label>
                             </div>
                         </Col>
                     </Row>
                     <Row>
-                        <Col>
+                        <Col sm={9}>
                             <div className="form-check">
                                 <Input 
                                     className="form-check-input"
@@ -302,23 +304,27 @@ export default class PolicyForm extends Component {
                             </div>
                         </Col>
                     </Row>
+                    <Error message={this.state.orderErrorMessage} />
                     <Row className="sum">
-                        <Col>
-                            <h2> Стоимость </h2>
+                        <Col sm={6} className="sum-container">
+                            <Row>
+                                <Col sm={9}>
+                                    <h3> Стоимость полиса: </h3>
+                                </Col>
+                                <Col className="policy-sum">
+                                    <h3> {this.state.sum} ₽ </h3>
+                                </Col>
+                            </Row>
                         </Col>
-                        <Col>
-                            <h2> {this.state.sum} ₽ </h2>
-                        </Col>
-                        <Col>
+                        <Col sm={2}>
                             <Button
-                                className="btn btn-primary"
+                                className="btn"
                                 onClick={this.order} >
                                     Оформить
                             </Button>
                         </Col>
                     </Row>
-                    <Error message={this.state.orderErrorMessage} />
-                    { this.state.orderId !== "" ? <PayForm orderId={this.state.orderId} /> : ""}
+                    { this.state.orderId !== "" ? <PayForm orderId={this.state.orderId} sum={this.state.sum} /> : ""}
                 </Form>
             </Container>
         );
