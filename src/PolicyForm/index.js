@@ -238,13 +238,13 @@ export default class PolicyForm extends Component {
                                 <input
                                     className="form-check-input"
                                     type="radio" 
-                                    name="flexRadioDefault" 
-                                    id="orange-radio"
+                                    name="orange-radio" 
+                                    id="1-month"
                                     value="0"
                                     defaultChecked
                                     onChange={() => this.radio(1)}/>
-                                <label className="form-check-label" htmlFor="orange-radio">
-                                    <span></span> 1 месяц
+                                <label class="new-radio" htmlFor="1-month">
+                                    1 месяц
                                 </label>
                             </div>
                         </Col>
@@ -253,11 +253,11 @@ export default class PolicyForm extends Component {
                                 <input
                                     className="form-check-input"
                                     type="radio"
-                                    name="flexRadioDefault"
-                                    id="orange-radio"
+                                    name="orange-radio"
+                                    id="3-month"
                                     onChange={() => this.radio(3)}/>
-                                <label className="form-check-label" htmlFor="orange-radio">
-                                     <span></span> 3 месяца
+                                <label class="new-radio" htmlFor="3-month">
+                                     3 месяца
                                 </label>
                             </div>
                         </Col>
@@ -266,11 +266,11 @@ export default class PolicyForm extends Component {
                                 <input 
                                     className="form-check-input" 
                                     type="radio" 
-                                    name="flexRadioDefault"
-                                    id="orange-radio"
+                                    name="orange-radio"
+                                    id="6-month"
                                     onChange={() => this.radio(6)}/>
-                                <label className="form-check-label" htmlFor="orange-radio">
-                                    <span></span> 6 месяцев
+                                <label class="new-radio" htmlFor="6-month">
+                                    6 месяцев
                                 </label>
                             </div>
                         </Col>
@@ -279,11 +279,11 @@ export default class PolicyForm extends Component {
                                 <input 
                                     className="form-check-input" 
                                     type="radio" 
-                                    name="flexRadioDefault" 
-                                    id="orange-radio"
+                                    name="orange-radio" 
+                                    id="12-month"
                                     onChange={() => this.radio(12)}/>
-                                <label className="form-check-label" htmlFor="orange-radio">
-                                    <span></span> 12 месяцев
+                                <label class="new-radio" htmlFor="12-month">
+                                    12 месяцев
                                 </label>
                             </div>
                         </Col>
@@ -294,11 +294,12 @@ export default class PolicyForm extends Component {
                                 <Input 
                                     className="form-check-input"
                                     type="checkbox" 
-                                    id="flexCheckDefault"
+                                    id="terms-accept"
+                                    defaultChecked
                                     validations={[ checked ]}/>
                                 <label 
-                                    className="form-check-label"
-                                    htmlFor="flexCheckDefault" >
+                                    className="new-checkbox"
+                                    htmlFor="terms-accept" >
                                 Нажимая кнопку «Оформить», я даю свое согласие на обработку моих персональных данных и соглашаетесь с политикой конфиденциальности, в соответствии с Федеральным законом от 27.07.2006 года №152-ФЗ «О персональных данных», на условиях и для целей, определенных в Согласии на обработку персональных данных
                                 </label>
                             </div>
